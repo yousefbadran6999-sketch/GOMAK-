@@ -155,4 +155,36 @@ function updateAvatarClothes() {
   saveAvatar();
 }
 
-function updateAvatar
+function updateAvatarShoes() {
+  const select = document.getElementById('shoesSelect');
+  if(select) avatarParts.shoes = select.value;
+  drawAvatar();
+  saveAvatar();
+}
+
+function saveAvatar() {
+  localStorage.setItem('gomak_avatar', JSON.stringify(avatarParts));
+}
+
+function loadAvatar() {
+  const saved = localStorage.getItem('gomak_avatar');
+  if(saved) {
+    avatarParts = JSON.parse(saved);
+    // تحديث قيم الـ select
+    const skinSelect = document.getElementById('skinSelect');
+    const hairSelect = document.getElementById('hairSelect');
+    const clothesSelect = document.getElementById('clothesSelect');
+    const shoesSelect = document.getElementById('shoesSelect');
+    if(skinSelect) skinSelect.value = avatarParts.skin;
+    if(hairSelect) hairSelect.value = avatarParts.hair;
+    if(clothesSelect) clothesSelect.value = avatarParts.clothes;
+    if(shoesSelect) shoesSelect.value = avatarParts.shoes;
+  }
+  drawAvatar();
+}
+
+// تشغيل عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+  initAvatarCanvas();
+  loadAvatar();
+});
