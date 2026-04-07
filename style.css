@@ -1,0 +1,335 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(135deg, #0a0f1e 0%, #0a0a1a 100%);
+  color: #fff;
+  direction: rtl;
+  padding-bottom: 60px;
+}
+
+/* واجهة أنيقة */
+.wallet {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  padding: 8px 18px;
+  border-radius: 40px;
+  z-index: 1000;
+  font-weight: bold;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.charge-btn {
+  background: gold;
+  border: none;
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.vpn-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: #7c3aed;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 30px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(124,58,237,0.4);
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 40px;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: #ddd;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #a855f7;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  border: none;
+  padding: 8px 24px;
+  border-radius: 30px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hero {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero h1 span {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 12px 32px;
+  border-radius: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  font-size: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  color: white;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid #a855f7;
+  color: #a855f7;
+}
+
+section {
+  padding: 60px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 32px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.games-grid, .skins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 25px;
+}
+
+.game-card, .skin-card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.game-card:hover, .skin-card:hover {
+  transform: translateY(-5px);
+  border-color: #a855f7;
+}
+
+.friend-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.friend-input input {
+  flex: 1;
+  max-width: 300px;
+  padding: 12px;
+  border-radius: 30px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  outline: none;
+}
+
+.friend-input button {
+  background: #a855f7;
+  border: none;
+  padding: 0 24px;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+#friendsList {
+  list-style: none;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+#friendsList li {
+  background: rgba(255,255,255,0.05);
+  padding: 12px 20px;
+  margin: 8px 0;
+  border-radius: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* مودال */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: #1a1a2e;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #a855f7;
+  color: white;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: #a855f7;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 30px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  outline: none;
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #a855f7;
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  z-index: 3000;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* إلغاء العلامة الخضراء */
+* {
+  cursor: default;
+}
+
+button, a, .login-btn, .charge-btn, .vpn-btn, .friend-input button {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  nav {
+    padding: 12px 20px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .hero h1 {
+    font-size: 32px;
+  }
+  section {
+    padding: 40px 20px;
+  }
+}
