@@ -1,7 +1,5 @@
 // ===================== العملات والرصيد =====================
 let userCoins = 500;
-let isDeveloper = false; // اجعلها true للمطورين
-let userMaps = [];
 let friends = JSON.parse(localStorage.getItem('friends')) || [];
 let vpnActive = false;
 
@@ -11,67 +9,51 @@ function updateCoinUI() {
   localStorage.setItem('userCoins', userCoins);
 }
 
-// شحن بالدولار
-function chargeDollars() {
-  let amount = prompt("كم دولار تريد شحنها؟ (1$ = 100 عملة)");
-  if(amount && !isNaN(amount) && parseFloat(amount) > 0) {
-    let coinsAdded = parseFloat(amount) * 100;
-    userCoins += coinsAdded;
-    updateCoinUI();
-    showToast(`✓ تم شحن ${coinsAdded} عملة`);
-  }
-}
-
-// ===================== VPN مجاني =====================
+// ===================== VPN =====================
 function toggleVPN() {
   vpnActive = !vpnActive;
   showToast(vpnActive ? "🔒 VPN متصل - اتصالك مشفر" : "🔓 VPN تم فصله");
   document.querySelector('.vpn-btn').style.background = vpnActive ? '#10b981' : '#7c3aed';
 }
 
-// ===================== المظاهر (Skins) =====================
-const animeSkins = [
-  { name: "ناروتو", price: 0, emoji: "🍥", rare: false },
-  { name: "سايتاما", price: 200, emoji: "👊", rare: false },
-  { name: "إيتشيغو", price: 350, emoji: "⚔️", rare: false },
-  { name: "ليفاي", price: 500, emoji: "🌀", rare: true },
-  { name: "جوجو", price: 800, emoji: "⭐", rare: true },
-  { name: "إيزوكو", price: 1000, emoji: "💚", rare: true }
+// ===================== الألعاب (تشتغل فعلاً) =====================
+const games = [
+  { name: "Mega Castle Wars", players: "3,241", genre: "حرب", emoji: "🏰", gameFile: "game-demo.html" },
+  { name: "Lava Runner", players: "1,892", genre: "مغامرة", emoji: "🌋", gameFile: "game-demo.html" },
+  { name: "Voxel Farm", players: "5,510", genre: "زراعة", emoji: "🌿", gameFile: "game-demo.html" },
+  { name: "Neon Grid", players: "2,780", genre: "سباق", emoji: "⚡", gameFile: "game-demo.html" },
+  { name: "Desert Storm", players: "988", genre: "استراتيجية", emoji: "🏜️", gameFile: "game-demo.html" },
+  { name: "Frost Arena", players: "4,102", genre: "PVP", emoji: "🧊", gameFile: "game-demo.html" }
 ];
 
-let ownedSkins = JSON.parse(localStorage.getItem('ownedSkins')) || [animeSkins[0].name];
-
-function loadSkins() {
-  const container = document.getElementById('skinsGrid');
+function loadGames() {
+  const container = document.getElementById('gamesGrid');
   if(!container) return;
-  container.innerHTML = animeSkins.map(skin => `
-    <div class="skin-card">
-      <div style="font-size: 48px; margin-bottom: 10px;">${skin.emoji}</div>
-      <h3>${skin.name}</h3>
-      <p>${skin.price === 0 ? "مجانية" : skin.price + " عملة"}</p>
-      ${skin.rare ? '<span style="color:gold;">✨ نادر</span><br>' : ''}
-      ${ownedSkins.includes(skin.name) 
-        ? '<button disabled style="background:#555;">مملوكة</button>' 
-        : `<button onclick="buySkin('${skin.name}', ${skin.price})">شراء</button>`}
+  container.innerHTML = games.map(game => `
+    <div class="game-card" onclick="openGame('${game.gameFile}', '${game.name}')">
+      <div style="font-size: 48px; margin-bottom: 10px;">${game.emoji}</div>
+      <h3>${game.name}</h3>
+      <p>👥 ${game.players} لاعب</p>
+      <p style="color:#a855f7;">${game.genre}</p>
+      <button style="margin-top:10px; background:#a855f7; border:none; padding:8px; border-radius:20px; color:white; cursor:pointer;">▶ العب</button>
     </div>
   `).join('');
 }
 
-function buySkin(name, price) {
-  if(ownedSkins.includes(name)) {
-    showToast("❌ لديك هذا المظهر بالفعل");
-    return;
-  }
-  if(userCoins < price) {
-    showToast("❌ رصيدك لا يكفي");
-    return;
-  }
-  userCoins -= price;
-  ownedSkins.push(name);
-  localStorage.setItem('ownedSkins', JSON.stringify(ownedSkins));
-  updateCoinUI();
-  loadSkins();
-  showToast(`✓ تم شراء مظهر ${name}`);
+// فتح اللعبة في مودال
+function openGame(gameFile, gameName) {
+  const modal = document.getElementById('gameModal');
+  const frame = document.getElementById('gameFrame');
+  frame.src = gameFile;
+  modal.style.display = 'flex';
+  showToast(`🎮 جاري تشغيل ${gameName}...`);
+}
+
+function closeGameModal() {
+  const modal = document.getElementById('gameModal');
+  const frame = document.getElementById('gameFrame');
+  frame.src = '';
+  modal.style.display = 'none';
 }
 
 // ===================== الأصدقاء =====================
@@ -112,65 +94,6 @@ function removeFriend(name) {
   localStorage.setItem('friends', JSON.stringify(friends));
   updateFriendsUI();
   showToast(`✓ تم حذف ${name} من الأصدقاء`);
-}
-
-// ===================== المابات =====================
-function createMap() {
-  let mapName = prompt("أدخل اسم الخريطة الجديدة:");
-  if(!mapName) return;
-  
-  if(isDeveloper) {
-    userMaps.push(mapName);
-    showToast(`🗺️ المطور: تم إنشاء خريطة "${mapName}"`);
-  } else {
-    if(userMaps.length < 1) {
-      userMaps.push(mapName);
-      showToast(`🗺️ تم إنشاء خريطة "${mapName}" (مسموح لك بخريطة واحدة فقط)`);
-    } else {
-      showToast("❌ اللاعبين العاديين يسمح لهم بخريطة واحدة فقط");
-    }
-  }
-  updateMapsUI();
-}
-
-function updateMapsUI() {
-  const container = document.getElementById('mapsList');
-  if(!container) return;
-  if(userMaps.length === 0) {
-    container.innerHTML = '<p style="text-align:center;">لم تنشئ أي خريطة بعد</p>';
-    return;
-  }
-  container.innerHTML = userMaps.map(map => `
-    <div style="background:rgba(255,255,255,0.05); padding:12px; margin:10px 0; border-radius:15px;">
-      🗺️ ${map}
-    </div>
-  `).join('');
-}
-
-// ===================== الألعاب =====================
-const games = [
-  { name: "MegaCastle Wars", players: "3,241", genre: "حرب", emoji: "🏰" },
-  { name: "Lava Runner", players: "1,892", genre: "مغامرة", emoji: "🌋" },
-  { name: "Voxel Farm", players: "5,510", genre: "زراعة", emoji: "🌿" },
-  { name: "Neon Grid Battle", players: "2,780", genre: "سباق", emoji: "⚡" }
-];
-
-function loadGames() {
-  const container = document.getElementById('gamesGrid');
-  if(!container) return;
-  container.innerHTML = games.map(game => `
-    <div class="game-card">
-      <div style="font-size: 48px; margin-bottom: 10px;">${game.emoji}</div>
-      <h3>${game.name}</h3>
-      <p>👥 ${game.players} لاعب</p>
-      <p style="color:#a855f7;">${game.genre}</p>
-      <button onclick="playGame('${game.name}')" style="margin-top:10px; background:#a855f7; border:none; padding:8px; border-radius:20px; color:white; cursor:pointer;">▶ العب</button>
-    </div>
-  `).join('');
-}
-
-function playGame(name) {
-  showToast(`🎮 جاري تشغيل ${name}...`);
 }
 
 // ===================== تسجيل الدخول =====================
@@ -220,6 +143,18 @@ function closeModal() {
   document.getElementById('authModal').style.display = 'none';
 }
 
+function openChargeModal() {
+  document.getElementById('chargeModal').style.display = 'flex';
+}
+
+function closeChargeModal() {
+  document.getElementById('chargeModal').style.display = 'none';
+}
+
+function openAvatarBuilder() {
+  document.getElementById('avatar').scrollIntoView({ behavior: 'smooth' });
+}
+
 function switchTab(tab) {
   const loginTab = document.getElementById('loginTab');
   const registerTab = document.getElementById('registerTab');
@@ -252,13 +187,15 @@ window.onload = () => {
   if(savedCoins) userCoins = parseInt(savedCoins);
   updateCoinUI();
   loadGames();
-  loadSkins();
   updateFriendsUI();
-  updateMapsUI();
   
   // إغلاق المودال عند الضغط خارجها
   window.onclick = (e) => {
-    let modal = document.getElementById('authModal');
-    if(e.target === modal) closeModal();
+    let authModal = document.getElementById('authModal');
+    let chargeModal = document.getElementById('chargeModal');
+    let gameModal = document.getElementById('gameModal');
+    if(e.target === authModal) closeModal();
+    if(e.target === chargeModal) closeChargeModal();
+    if(e.target === gameModal) closeGameModal();
   };
 };
