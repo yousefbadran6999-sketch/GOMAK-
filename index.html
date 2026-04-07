@@ -3,98 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>جوماك — العالم الافتراضي</title>
+  <title>GOMAK - عالمك الافتراضي</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- رصيد العملات -->
-  <div class="wallet">
-    <div class="wallet-icon">🪙</div>
-    <span id="coinBalance">500</span>
-    <span>GOMAK</span>
-    <button class="charge-btn" onclick="chargeDollars()">💵 شحن</button>
+<!-- رصيد العملات -->
+<div class="wallet">
+  <div class="wallet-icon">🪙</div>
+  <span id="coinBalance">500</span>
+  <span>GOMAK</span>
+  <button class="charge-btn" onclick="openChargeModal()">💵 شحن</button>
+</div>
+
+<!-- زر VPN -->
+<button class="vpn-btn" onclick="toggleVPN()">🔒 VPN مجاني</button>
+
+<!-- نافبار -->
+<nav>
+  <div class="logo">GO<span>MAK</span></div>
+  <ul class="nav-links">
+    <li><a href="#games">الألعاب</a></li>
+    <li><a href="#avatar">تعديل الشخصية</a></li>
+    <li><a href="#friends">الأصدقاء</a></li>
+  </ul>
+  <button class="login-btn" onclick="openModal()">دخول</button>
+</nav>
+
+<!-- الهيرو -->
+<div class="hero">
+  <h1>عالمك الافتراضي <span>GOMAK</span></h1>
+  <p>العب، ابني، وشارك ألعابك مع العالم</p>
+  <div class="hero-btns">
+    <button class="btn-primary" onclick="openModal()">🎮 ابدأ مجاناً</button>
+    <button class="btn-secondary" onclick="openAvatarBuilder()">👤 صمم شخصيتك</button>
   </div>
+</div>
 
-  <!-- زر VPN -->
-  <button class="vpn-btn" onclick="toggleVPN()">🔒 VPN مجاني</button>
+<!-- الألعاب -->
+<section id="games">
+  <h2>🎮 الألعاب المميزة</h2>
+  <div class="games-grid" id="gamesGrid"></div>
+</section>
 
-  <!-- نافبار -->
-  <nav>
-    <div class="logo">GO<span>MAK</span></div>
-    <ul class="nav-links">
-      <li><a href="#games">الألعاب</a></li>
-      <li><a href="#skins">المظاهر</a></li>
-      <li><a href="#friends">الأصدقاء</a></li>
-      <li><a href="#maps">المابات</a></li>
-    </ul>
-    <button class="login-btn" onclick="openModal()">دخول</button>
-  </nav>
-
-  <!-- الهيرو -->
-  <div class="hero">
-    <h1>عالمك الافتراضي <span>GOMAK</span></h1>
-    <p>العب، ابني، وشارك ألعابك مع العالم</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="openModal()">🎮 ابدأ مجاناً</button>
-      <button class="btn-secondary" onclick="createMap()">🗺️ أنشئ خريطة</button>
+<!-- تعديل الشخصية (أفاتار) -->
+<section id="avatar">
+  <h2>👤 صمم شخصيتك</h2>
+  <div class="avatar-container">
+    <div class="avatar-preview">
+      <canvas id="avatarCanvas" width="300" height="300"></canvas>
+    </div>
+    <div class="avatar-controls">
+      <div class="control-group">
+        <label>🎭 المظهر</label>
+        <select id="skinSelect" onchange="updateAvatarSkin()">
+          <option value="naruto">ناروتو</option>
+          <option value="saitama">سايتاما</option>
+          <option value="luffy">لوفي</option>
+          <option value="goku">غوكو</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>💇 الشعر</label>
+        <select id="hairSelect" onchange="updateAvatarHair()">
+          <option value="spiky">شوكي</option>
+          <option value="long">طويل</option>
+          <option value="short">قصير</option>
+          <option value="bald">أصلع</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>👕 الملابس</label>
+        <select id="clothesSelect" onchange="updateAvatarClothes()">
+          <option value="ninja">زي نينجا</option>
+          <option value="samurai">زي ساموراي</option>
+          <option value="casual">ملابس عادية</option>
+          <option value="sport">ملابس رياضية</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>👟 الحذاء</label>
+        <select id="shoesSelect" onchange="updateAvatarShoes()">
+          <option value="ninja">حذاء نينجا</option>
+          <option value="sneakers">حذاء رياضي</option>
+          <option value="boots">جزمة</option>
+        </select>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- الألعاب -->
-  <section id="games">
-    <h2>أشهر الألعاب</h2>
-    <div class="games-grid" id="gamesGrid"></div>
-  </section>
+<!-- الأصدقاء -->
+<section id="friends">
+  <h2>👥 أصدقائك</h2>
+  <div class="friend-input">
+    <input type="text" id="friendName" placeholder="اسم الصديق">
+    <button onclick="addFriend()">➕ إضافة</button>
+  </div>
+  <ul id="friendsList"></ul>
+</section>
 
-  <!-- المظاهر (Skins) -->
-  <section id="skins">
-    <h2>مظاهر أنمي</h2>
-    <div class="skins-grid" id="skinsGrid"></div>
-  </section>
-
-  <!-- الأصدقاء -->
-  <section id="friends">
-    <h2>أصدقائك</h2>
-    <div class="friend-input">
-      <input type="text" id="friendName" placeholder="اسم الصديق">
-      <button onclick="addFriend()">➕ إضافة</button>
+<!-- مودال تسجيل الدخول -->
+<div id="authModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('login')">دخول</button>
+      <button class="tab-btn" onclick="switchTab('register')">حساب جديد</button>
     </div>
-    <ul id="friendsList"></ul>
-  </section>
-
-  <!-- المابات -->
-  <section id="maps">
-    <h2>المابات التي أنشأتها</h2>
-    <div id="mapsList"></div>
-  </section>
-
-  <!-- مودال تسجيل الدخول -->
-  <div id="authModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('login')">دخول</button>
-        <button class="tab-btn" onclick="switchTab('register')">حساب جديد</button>
-      </div>
-      <div id="loginTab">
-        <input type="text" placeholder="اسم اللاعب" id="loginUsername">
-        <input type="password" placeholder="كلمة المرور" id="loginPassword">
-        <button onclick="login()">دخول</button>
-      </div>
-      <div id="registerTab" style="display:none">
-        <input type="text" placeholder="اسم اللاعب" id="regUsername">
-        <input type="password" placeholder="كلمة المرور (8+ أحرف وأرقام)" id="regPassword">
-        <button onclick="register()">إنشاء حساب</button>
-      </div>
+    <div id="loginTab">
+      <input type="text" placeholder="اسم اللاعب" id="loginUsername">
+      <input type="password" placeholder="كلمة المرور" id="loginPassword">
+      <button onclick="login()">دخول</button>
+    </div>
+    <div id="registerTab" style="display:none">
+      <input type="text" placeholder="اسم اللاعب" id="regUsername">
+      <input type="password" placeholder="كلمة المرور (8+ أحرف وأرقام)" id="regPassword">
+      <button onclick="register()">إنشاء حساب</button>
     </div>
   </div>
+</div>
 
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
+<!-- مودال شحن العملات -->
+<div id="chargeModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeChargeModal()">&times;</span>
+    <h3 style="margin-bottom:20px;">💰 شحن العملات</h3>
+    <div class="charge-options">
+      <div class="charge-option" onclick="processCharge(5)">
+        <span>$5</span>
+        <span>= 500 عملة</span>
+        <span>⭐ هدية 50 عملة</span>
+      </div>
+      <div class="charge-option" onclick="processCharge(10)">
+        <span>$10</span>
+        <span>= 1000 عملة</span>
+        <span>⭐ هدية 150 عملة</span>
+      </div>
+      <div class="charge-option" onclick="processCharge(20)">
+        <span>$20</span>
+        <span>= 2000 عملة</span>
+        <span>⭐ هدية 400 عملة</span>
+      </div>
+      <div class="charge-option" onclick="processCharge(50)">
+        <span>$50</span>
+        <span>= 5000 عملة</span>
+        <span>⭐ هدية 1500 عملة</span>
+      </div>
+    </div>
+    <div class="payment-methods">
+      <button onclick="processPayment('paypal')">💳 PayPal</button>
+      <button onclick="processPayment('stripe')">💳 بطاقة ائتمان</button>
+      <button onclick="processPayment('vodafone')">📱 فودافون كاش</button>
+    </div>
+  </div>
+</div>
 
-  <script src="script.js"></script>
+<!-- مودال تشغيل اللعبة -->
+<div id="gameModal" class="modal game-modal">
+  <div class="modal-content game-modal-content">
+    <span class="close" onclick="closeGameModal()">&times;</span>
+    <iframe id="gameFrame" src="" frameborder="0"></iframe>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script src="avatar-builder.js"></script>
+<script src="payment-handler.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
